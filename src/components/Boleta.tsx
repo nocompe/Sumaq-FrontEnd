@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Printer, Leaf } from 'lucide-react';
 import { api } from '../lib/api';
 
@@ -31,8 +32,9 @@ const Boleta: FC<{ pedidoId: number; onClose: () => void }> = ({ pedidoId, onClo
   const fFecha = fecha ? fecha.toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '';
   const fHora = fecha ? fecha.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' }) : '';
 
-  return (
-    <div className="boleta-modal fixed inset-0 z-[60] flex items-center justify-center p-4">
+  // Se renderiza en un portal directo sobre <body> para poder aislarlo al imprimir.
+  return createPortal(
+    <div id="boleta-portal" className="boleta-modal fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-on-surface/50 backdrop-blur-sm no-print" onClick={onClose} />
 
       <div className="boleta-wrap relative w-full max-w-lg max-h-[92vh] overflow-y-auto qz-pop">
